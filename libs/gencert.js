@@ -4,10 +4,10 @@ const pki = forge.pki;
 module.exports = {};
 
 module.exports.generateCert = function (name, domainNames, status) {
+	if (!status) {
+		var status = function () {}; // no-op status
+	}
 	return new Promise(function (resolve, reject) {
-		if (!status) {
-			var status = function () {}; // no-op status
-		}
 		if (!name || !domainNames) {
 			reject("Common Name and Domain Names needed");
 			return;
