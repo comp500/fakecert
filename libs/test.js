@@ -1,5 +1,5 @@
 var test = require("./gencert.js");
-var wininstall = require("./wininstall.js");
+var install = require("./install.js");
 
 /*test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
 	console.log(status);
@@ -19,7 +19,9 @@ test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
 	console.log(status);
 }).then(function (cert) {
 	test.certToPem(cert).then(function (pem) {
-		wininstall.run(pem);
+		install(pem).catch(function () {
+			console.log("wasn't installed");
+		});
 	});
 });
 

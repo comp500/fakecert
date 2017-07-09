@@ -16,7 +16,7 @@ module.exports = function (cert) {
 					var spawnImport = spawn("certutil", ["-addstore", "-user", "Root", path], { shell: true });
 					spawnImport.on("close", function (code, signal) {
 						fs.unlink(path); // Delete file, don't check for failure
-						if (code == 0) { // Won't reject on failure
+						if (code == 0) {
 							resolve();
 						} else {
 							reject();
