@@ -26,6 +26,7 @@
   "homepage": "https://github.com/comp500/fakecert#readme",
   "dependencies": {
     "node-forge": "^0.7.1",
-    "node-keytool": "0.0.3"
+    "node-keytool": "0.0.3",
+    "tmp": "0.0.31"
   }
 }
