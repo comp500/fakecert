@@ -1,6 +1,7 @@
 var test = require("./gencert.js");
+var wininstall = require("./wininstall.js");
 
-test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
+/*test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
 	console.log(status);
 }).then(function (cert) {
 	test.certToPem(cert).then(function (pem) {
@@ -12,6 +13,13 @@ test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
 	test.keyToPem(cert.signingKey).then(function (key) {
 		console.log(key);
 	});
-});
+});*/
 
+test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
+	console.log(status);
+}).then(function (cert) {
+	test.certToPem(cert).then(function (pem) {
+		wininstall.run(pem);
+	});
+});
 
