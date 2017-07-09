@@ -19,7 +19,7 @@ module.exports = function (cert) {
 						if (code == 0) {
 							resolve();
 						} else {
-							reject();
+							reject(code);
 						}
 					});
 				});
