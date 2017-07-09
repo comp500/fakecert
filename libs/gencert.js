@@ -3,13 +3,13 @@ const pki = forge.pki;
 
 module.exports = {};
 
-module.exports.generateCert = function (options, status) {
+module.exports.generateCert = function (name, domainNames, status) {
 	return new Promise(function (resolve, reject) {
 		if (!status) {
 			var status = function () {}; // no-op status
 		}
-		if (!options || !options.commonName || !options.orgName) {
-			reject("Common Name and Organisation Name needed");
+		if (!name || !domainNames) {
+			reject("Common Name and Domain Names needed");
 			return;
 		}
 		status(0); // generating keypairs
@@ -23,38 +23,26 @@ module.exports.generateCert = function (options, status) {
 			cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 			var attrs = [{
 			  name: 'commonName',
-			  value: options.commonName
-			}, {
-			  name: 'organizationName',
-			  value: options.orgName
+			  value: name
 			}];
 			cert.setSubject(attrs);
 			cert.setIssuer(attrs);
-			if (options.SAN) {
-				var altNames = [];
-				for (var i = 0; i < options.SAN.length; i++) {
-					altNames.push({
-						type: 2,
-						value: options.SAN[i]
-					});
-				}
-				cert.setExtensions([{
-				  name: 'basicConstraints',
-				  cA: true
-				}, {
-				  name: 'subjectAltName',
-				  altNames: altNames
-				}, {
-				  name: 'subjectKeyIdentifier'
-				}]);
-			} else {
-				cert.setExtensions([{
-				  name: 'basicConstraints',
-				  cA: true
-				}, {
-				  name: 'subjectKeyIdentifier'
-				}]);
+			var altNames = [];
+			for (var i = 0; i < domainNames.length; i++) {
+				altNames.push({
+					type: 2,
+					value: domainNames[i]
+				});
 			}
+			cert.setExtensions([{
+			  name: 'basicConstraints',
+			  cA: true
+			}, {
+			  name: 'subjectAltName',
+			  altNames: altNames
+			}, {
+			  name: 'subjectKeyIdentifier'
+			}]);
 			status(2); // signing cert
 			cert.sign(keys.privateKey);
 			resolve(cert);
