@@ -45,6 +45,7 @@ module.exports.generateCert = function (name, domainNames, status) {
 			}]);
 			status(2); // signing cert
 			cert.sign(keys.privateKey);
+			cert.signingKey = keys.privateKey;
 			resolve(cert);
 		});
 	});
