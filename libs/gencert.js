@@ -3,11 +3,14 @@ const pki = forge.pki;
 
 module.exports = {};
 
-module.exports.generateCert = function (status, options) {
-	if (!status) {
-		var status = function () {}; // no-op status
-	}
+module.exports.generateCert = function (options, status) {
 	return new Promise(function (resolve, reject) {
+		if (!status) {
+			var status = function () {}; // no-op status
+		}
+		if (!options.commonName || !options.orgName) {
+			reject("Common Name and Organisation Name needed");
+		}
 		status(0); // generating keypairs
 		pki.rsa.generateKeyPair({bits: 2048, workers: 2}, function(err, keys) {
 			status(1); // creating cert
@@ -21,36 +24,36 @@ module.exports.generateCert = function (status, options) {
 			  name: 'commonName',
 			  value: options.commonName
 			}, {
-			  name: 'countryName',
-			  value: options.countryName
-			}, {
-			  shortName: 'ST',
-			  value: options.stateName
-			}, {
 			  name: 'organizationName',
 			  value: options.orgName
-			}, {
-			  shortName: 'OU',
-			  value: options.orgUnit
 			}];
 			cert.setSubject(attrs);
 			cert.setIssuer(attrs);
-			var altNames = {};
-			for (var i = 0; i < options.SAN.length; i++) {
-				altNames.push({
-					type: 2,
-					value: options.SAN[i]
-				});
+			if (options.SAN) {
+				var altNames = {};
+				for (var i = 0; i < options.SAN.length; i++) {
+					altNames.push({
+						type: 2,
+						value: options.SAN[i]
+					});
+				}
+				cert.setExtensions([{
+				  name: 'basicConstraints',
+				  cA: true
+				}, {
+				  name: 'subjectAltName',
+				  altNames: altNames
+				}, {
+				  name: 'subjectKeyIdentifier'
+				}]);
+			} else {
+				cert.setExtensions([{
+				  name: 'basicConstraints',
+				  cA: true
+				}, {
+				  name: 'subjectKeyIdentifier'
+				}]);
 			}
-			cert.setExtensions([{
-			  name: 'basicConstraints',
-			  cA: true
-			}, {
-			  name: 'subjectAltName',
-			  altNames: altNames
-			}, {
-			  name: 'subjectKeyIdentifier'
-			}]);
 			status(2); // signing cert
 			cert.sign(keys.privateKey);
 			resolve(cert);
