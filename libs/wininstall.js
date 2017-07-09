@@ -2,9 +2,7 @@ const tmp = require("tmp");
 const fs = require("fs");
 const spawn = require('child_process').spawn;
 
-module.exports = {};
-
-module.exports.run = function (cert) {
+module.exports = function (cert) {
 	return new Promise(function (resolve, reject) {
 		tmp.file({ postfix: '.crt', keep: true }, function (err, path, fd, cleanup) {
 			if (err) {
