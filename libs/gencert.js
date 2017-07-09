@@ -8,8 +8,9 @@ module.exports.generateCert = function (options, status) {
 		if (!status) {
 			var status = function () {}; // no-op status
 		}
-		if (!options.commonName || !options.orgName) {
+		if (!options || !options.commonName || !options.orgName) {
 			reject("Common Name and Organisation Name needed");
+			return;
 		}
 		status(0); // generating keypairs
 		pki.rsa.generateKeyPair({bits: 2048, workers: 2}, function(err, keys) {
