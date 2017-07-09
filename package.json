@@ -1,0 +1,31 @@
+{
+  "name": "fakecert",
+  "version": "0.0.1",
+  "description": "Generates and/or installs self-signed certificates to system certificate stores",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp500/fakecert.git"
+  },
+  "keywords": [
+    "crypto",
+    "certificate",
+    "install",
+    "tls",
+    "ssl",
+    "https"
+  ],
+  "author": "comp500",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/comp500/fakecert/issues"
+  },
+  "homepage": "https://github.com/comp500/fakecert#readme",
+  "dependencies": {
+    "node-forge": "^0.7.1",
+    "node-keytool": "0.0.3"
+  }
+}
