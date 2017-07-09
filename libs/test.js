@@ -9,6 +9,10 @@ var cert = test.generateCert({
 	]
 }, function (status) {
 	console.log(status);
+}).then(function (cert) {
+	test.certToPem(cert).then(function (pem) {
+		console.log(pem);
+	});
 });
 
-console.log(test.certToPem(cert));
+

@@ -31,7 +31,7 @@ module.exports.generateCert = function (options, status) {
 			cert.setSubject(attrs);
 			cert.setIssuer(attrs);
 			if (options.SAN) {
-				var altNames = {};
+				var altNames = [];
 				for (var i = 0; i < options.SAN.length; i++) {
 					altNames.push({
 						type: 2,
