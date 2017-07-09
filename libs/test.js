@@ -9,6 +9,9 @@ test.generateCert("Hooli", ["hooli.xyz", "*.hooli.xyz"], function (status) {
 			console.log(der);
 		});
 	});
+	test.keyToPem(cert.signingKey).then(function (key) {
+		console.log(key);
+	});
 });
 
 

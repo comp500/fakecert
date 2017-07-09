@@ -62,3 +62,9 @@ module.exports.pemToDer = function (pem) {
 		resolve(pki.pemToDer(pem));
 	});
 }
+
+module.exports.keyToPem = function (key) {
+	return new Promise(function (resolve, reject) {
+		resolve(pki.privateKeyToPem(key));
+	});
+}
