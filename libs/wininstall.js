@@ -15,7 +15,7 @@ module.exports.run = function (cert) {
 					reject(error);
 				}
 				fs.close(fd, function () {
-					var spawnImport = spawn("rundll32", ["cryptext.dll,CryptExtOpenCER", path]);
+					var spawnImport = spawn("certutil", ["-addstore", "-user", "Root", path], { shell: true });
 					spawnImport.on("close", function (code, signal) {
 						fs.unlink(path); // Delete file, don't check for failure
 						if (code == 0) { // Won't reject on failure
@@ -29,3 +29,4 @@ module.exports.run = function (cert) {
 		});
 	});
 };
+
