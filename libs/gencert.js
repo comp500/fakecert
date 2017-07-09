@@ -3,7 +3,7 @@ const pki = forge.pki;
 
 module.exports = {};
 
-module.exports.generateCert = function (status) {
+module.exports.generateCert = function (status, options) {
 	if (!status) {
 		var status = function () {}; // no-op status
 	}
@@ -19,34 +19,35 @@ module.exports.generateCert = function (status) {
 			cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 			var attrs = [{
 			  name: 'commonName',
-			  value: 'mojang.com'
+			  value: options.commonName
 			}, {
 			  name: 'countryName',
-			  value: 'US'
+			  value: options.countryName
 			}, {
 			  shortName: 'ST',
-			  value: 'Amazon'
+			  value: options.stateName
 			}, {
 			  name: 'organizationName',
-			  value: 'Amazon'
+			  value: options.orgName
 			}, {
 			  shortName: 'OU',
-			  value: 'Server CA 1B'
+			  value: options.orgUnit
 			}];
 			cert.setSubject(attrs);
 			cert.setIssuer(attrs);
+			var altNames = {};
+			for (var i = 0; i < options.SAN.length; i++) {
+				altNames.push({
+					type: 2,
+					value: options.SAN[i]
+				});
+			}
 			cert.setExtensions([{
 			  name: 'basicConstraints',
 			  cA: true
 			}, {
 			  name: 'subjectAltName',
-			  altNames: [{
-				type: 2,
-				value: 'mojang.com'
-			  }, {
-				type: 2,
-				value: '*.mojang.com'
-			  }]
+			  altNames: altNames
 			}, {
 			  name: 'subjectKeyIdentifier'
 			}]);
